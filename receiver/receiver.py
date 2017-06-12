@@ -14,7 +14,6 @@ def get_ip_address():
 def monitor_callback(packet):
     nic_ip=get_ip_address()
     if DNS in packet and packet[IP].dst == nic_ip and( packet[DNS].qd[DNSQR].qname[0:8] == "12345678" or packet[DNS].qd[DNSQR].qname[0:8] == "87654321"):
-            # abrimos el archivo 'received.txt' y escribimos los datos recibidos
             print "pacote recibido..."
             f = open('received.txt', 'a')
             data = packet[DNS].qd[DNSQR].qname[8:]
@@ -25,6 +24,5 @@ def monitor_callback(packet):
 
 
 print "Esperando la llegada de los paquetes..."
-
 #pkts = sniff(iface="en1", prn=monitor_callback)
 pkts = sniff(prn=monitor_callback)

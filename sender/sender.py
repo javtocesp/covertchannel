@@ -21,13 +21,9 @@ l4_TCP = TCP()
 l4_TCP.dport=53
 l7 = DNS()
 
-key = "12345678" # con esta clave vamos a diferenciar nuestros paquetes de los otros paquetes ICMP que van a llegar al host"
-msgsize = 12  #como vamos a dividir el mensaje en partes,aqui definimos el tamano de cada parte
-#payload = "" # declaramos la variable 'payload' que vamos a utilizar mas adelante
+key = "12345678" 
+msgsize = 12
 
-data = "Datos a enviar por el canal encubierto"
-
-# las variables 'first', 'last' y 'count' las vamos a utilizar para el proceso de cada parte del mensaje
 first = 0
 last = msgsize
 count = (len(data)/msgsize)+1
