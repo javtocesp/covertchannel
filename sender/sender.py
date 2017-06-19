@@ -9,7 +9,7 @@ import os
 
 # construimos la capa 3 del paquete (IP)
 l3 = IP()
-l3.dst = "10.0.2.5"
+l3.dst = "10.0.2.15"
 
 # construimos la capa 4 del paquete (ICMP)
 l4 = ICMP()
@@ -26,7 +26,7 @@ msgsize = 12
 
 first = 0
 last = msgsize
-count = (len(data)/msgsize)+1
+#count = (len(data)/msgsize)+1
 
 def convert_file_to_hex(path_to_file='/home/javier/Pictures/skydiving-katrina.jpg'):
     with open(path_to_file,'rb') as f:
