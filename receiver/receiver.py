@@ -23,7 +23,8 @@ def convert_b64_to_file(file_in_b64,path_to_save='/home/javier/Pictures/skydivin
 def monitor_callback(packet):
     global file_to_ensamble
     nic_ip=get_ip_address()
-    if DNS in packet and packet[IP].dst == nic_ip and( packet[DNS].qd[DNSQR].qname[0:8] == "12345678" or packet[DNS].qd[DNSQR].qname[0:8] == "87654321"):
+    if (IP in packet):
+        if (DNS in packet and packet[IP].dst == nic_ip) and( packet[DNS].qd[DNSQR].qname[0:8] == "12345678" or packet[DNS].qd[DNSQR].qname[0:8] == "87654321"):
             print "pacote recibido..."
             f = open('received.txt', 'a')
             data = packet[DNS].qd[DNSQR].qname[8:]
